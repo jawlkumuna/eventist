@@ -1,0 +1,19 @@
+{% load thumbnail %}
+
+<ul class="row px-0">
+  {% for host in hosts %}
+    <div class="col-6 col-md-2 my-2">
+      <div class="card h-100">
+        <div class="position-relative">
+          <img src="{{ host.profile_picture | thumbnail_url:'profile' }}"
+               class="card-img-top"
+               alt="{{ host.name }}" />
+          <a href="{% url 'events:host_detail' host.id %}" class="stretched-link"></a>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <h3 class="card-title flex-grow-1 fs-5">{{ host.name | truncatechars:25 }}</h3>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</ul>

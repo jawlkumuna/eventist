@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load thumbnail %}
+
+{% block title %}
+  Eventist
+{% endblock title %}
+{% block content %}
+  <h1 class="text-center mb-3">Eventist</h1>
+  <h2>Upcoming Events</h2>
+  {% include 'events/event_list_include.html' with events=upcoming %}
+  {% if ongoing %}
+    <h2>Ongoing Events</h2>
+    {% include 'events/event_list_include.html' with events=ongoing %}
+  {% endif %}
+  <h2>Films today</h2>
+  {% include 'events/film_list_include.html' with film_list=films_today %}
+{% endblock content %}

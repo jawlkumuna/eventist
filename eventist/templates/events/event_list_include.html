@@ -1,0 +1,36 @@
+{% load thumbnail %}
+
+<ul class="row px-0">
+  {% for event in events %}
+    <div class="col-12 col-md-4 my-2">
+      <div class="card h-100">
+        <div class="position-relative">
+          {% if not event.banner %}
+            <img src="{{ event.films.all.0.backdrop | thumbnail_url:'normal' }}"
+                 class="card-img-top"
+                 alt="..." />
+          {% else %}
+            <img src="{{ event.banner | thumbnail_url:'normal' }}"
+                 class="card-img-top"
+                 alt="..." />
+          {% endif %}
+          <a href="{% url 'events:event_detail' event.id %}"
+             class="stretched-link"></a>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <p class="card-text">
+            {{ event.start_date }}
+            {{ event.relative_date_string }}
+          </p>
+          <h5 class="card-title flex-grow-1">{{ event.title }}</h5>
+          <div class="d-flex flex-row">
+            <div class="card-text">{{ event.location }}</div>
+          </div>
+          <div>
+            {% for tag in event.tags.all %}<span class="badge text-bg-primary">{{ tag.name }}</span>{% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</ul>

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load thumbnail %}
+
+{% block title %}
+  {{ object.name }}
+{% endblock title %}
+{% block content %}
+  <div class="row mb-3">
+    <div class="col-12 col-md-3">
+      <img src="{{ object.profile_picture | thumbnail_url:'profile' }}"
+           class="img-fluid rounded d-block mx-auto"
+           alt="{{ object.name }}" />
+    </div>
+    <div class="col-12 col-md-4">
+      <h1>{{ object.name }}</h1>
+      <p>{{ object.description }}</p>
+      <a href="https://facebook.com/{{ object.facebook_id }}" target="_blank">
+        <div class="btn btn-primary">
+          <span class="bi-facebook me-2"></span>Facebook page
+        </div>
+      </a>
+    </div>
+  </div>
+  {% if upcoming %}
+    <h2>Upcoming events</h2>
+    {% include 'events/event_list_include.html' with events=upcoming %}
+  {% endif %}
+  {% if past %}
+    <h2>Past events</h2>
+    {% include 'events/event_list_include.html' with events=past %}
+  {% endif %}
+{% endblock content %}

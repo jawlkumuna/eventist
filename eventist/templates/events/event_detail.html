@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load thumbnail %}
+
+{% block title %}
+  {{ object.title }}
+{% endblock title %}
+{% block content %}
+  <h1>{{ object.title }}</h1>
+  <div class="row mb-3">
+    <div class="col-12 col-md-8 mb-3">
+      <img src="{{ object.banner | thumbnail_url:'normal' }}"
+           class="img-fluid"
+           alt="{{ object.title }}" />
+    </div>
+    <div class="col-12 col-md-4">
+      <ul class="list-group list-group-flush border border-2 rounded-3 p-3 mb-3">
+        <li class="list-group-item">
+          <span class="bi-calendar me-3"></span>Start:
+          <strong>{{ object.start_date }}</strong>
+        </li>
+        {% if object.end_date %}
+          <li class="list-group-item">
+            <span class="bi-calendar-fill me-3"></span>End:
+            <strong>{{ object.end_date }}</strong>
+          </li>
+        {% endif %}
+        <li class="list-group-item">
+          <span class="bi-geo-alt-fill me-3"></span>Location:
+          <strong>{{ object.location | join:", " }}</strong>
+        </li>
+      </ul>
+      {% if object.source_url %}
+        <a href="{{ object.source_url }}"
+           target="_blank"
+           class="d-block text-center">Facebook event</a>
+      {% endif %}
+      <br />
+      <a href="{{ object.google_calendar_link }}"
+         target="_blank"
+         class="d-block text-center">Add to calendar</a>
+    </div>
+  </div>
+  <h2>Description</h2>
+  <p>{{ object.description | linebreaks }}</p>
+  <h2>Hosts</h2>
+  <ul class="row px-0">
+    {% include 'events/host_list_include.html' with hosts=object.organizers.all %}
+  </ul>
+  {% if object.films.count > 0 %}
+    <h2>Films</h2>
+    {% include 'events/film_list_include.html' with film_list=object.films.all %}
+  {% endif %}
+{% endblock content %}

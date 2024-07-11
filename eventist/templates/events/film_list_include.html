@@ -1,0 +1,17 @@
+{% load thumbnail %}
+
+<div class="row">
+  {% for film in film_list %}
+    <div class="col-6 col-md-2 my-2">
+      <div class="card h-100">
+        <img src="{{ film.poster | thumbnail_url:'poster' }}"
+             class="card-img-top"
+             alt="{{ film.title }}" />
+        <a href="{% url 'events:film_detail' film.id %}" class="stretched-link"></a>
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title flex-grow-1">{{ film.title }}</h5>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
