@@ -30,7 +30,7 @@ defusedxml==0.7.1
 distlib==0.3.8
 Django==4.2.13
 django-allauth==0.61.1
-django-anymail==10.2
+django-anymail==11.0
 django-celery-beat==2.5.0
 django-cors-headers==4.3.1
 django-coverage-plugin==3.1.0
