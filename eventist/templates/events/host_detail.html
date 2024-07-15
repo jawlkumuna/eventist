@@ -22,12 +22,20 @@
       </a>
     </div>
   </div>
-  {% if upcoming %}
-    <h2>Upcoming events</h2>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link {% if not is_past %}active{% endif %}"
+         aria-current="page"
+         href="{% url 'events:host_detail' object.id %}?past=false">Upcoming</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if is_past %}active{% endif %}"
+         href="{% url 'events:host_detail' object.id %}?past=true">Past</a>
+    </li>
+  </ul>
+  {% if not is_past %}
     {% include 'events/event_list_include.html' with events=upcoming %}
-  {% endif %}
-  {% if past %}
-    <h2>Past events</h2>
+  {% else %}
     {% include 'events/event_list_include.html' with events=past %}
   {% endif %}
 {% endblock content %}

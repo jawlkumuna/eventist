@@ -123,11 +123,15 @@ class HostView(generic.DetailView):
 
 def host_view(request, pk):
     host = Host.objects.get(pk=pk)
+    is_past = request.GET.get("past", False) == "true"
     upcoming = host.events.filter(
         cinema=False, start_date__gte=timezone.now()).order_by("start_date")
     past = host.events.filter(
         cinema=False, start_date__lte=timezone.now()).order_by("-start_date")
-    return render(request, "events/host_detail.html", {"object": host, "upcoming": upcoming, "past": past})
+    return render(request, "events/host_detail.html", {"object": host,
+                                                       "upcoming": upcoming,
+                                                       "past": past,
+                                                       "is_past": is_past})
 
 
 class FilmListView(generic.ListView):
