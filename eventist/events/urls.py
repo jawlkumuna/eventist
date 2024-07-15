@@ -11,6 +11,8 @@ urlpatterns = [
     path("hosts/<int:pk>/", views.host_view, name="host_detail"),
     path("films/", views.FilmListView.as_view(), name="films"),
     path("films/<int:pk>/", views.film_details, name="film_detail"),
+    path("tags/", views.tag_list, name="tags"),
+    path("tags/<int:pk>/", views.tag_details, name="tag_detail"),
     path("scrapeevent/<int:id>/", views.scrape_event_view, name="scrapeEvent"),
     path(
         "scrapehostfuture/<path:host>/",

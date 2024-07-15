@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load thumbnail %}
+
+{% block title %}
+  Tags
+{% endblock title %}
+{% block content %}
+  <h1>Tags</h1>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Event count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tag in page_obj %}
+          <tr>
+            <td>
+              <a href="{% url 'events:tag_detail' tag.id %}">{{ tag.name }}</a>
+            </td>
+            <td>{{ tag.event_count }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <nav aria-label="Pagination">
+      <ul class="pagination pagination-sm">
+        <li class="page-item {% if page_obj.number == 1 %}disabled{% endif %}">
+          <a class="page-link"
+             href="{% if page_obj.has_previous %} ?q={{ q }}&page={{ page_obj.previous_page_number }} {% endif %}">&lt</a>
+        </li>
+        {% for i in page_obj.adjusted_elided_pages %}
+          {% if i == page_obj.number %}
+            <li class="page-item active" aria-current="page">
+              <span class="page-link">{{ i }}</span>
+            </li>
+          {% elif i == page_obj.paginator.ELLIPSIS %}
+            <li class="page-item disabled" aria-current="page">
+              <span class="page-link">{{ i }}</span>
+            </li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?q={{ q }}&page={{ i }}">{{ i }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        <li class="page-item {% if page_obj.number == page_obj.paginator.num_pages %}disabled{% endif %}">
+          <a class="page-link"
+             href="{% if page_obj.has_next %} ?q={{ q }}&page={{ page_obj.next_page_number }} {% endif %}">&gt</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+{% endblock content %}

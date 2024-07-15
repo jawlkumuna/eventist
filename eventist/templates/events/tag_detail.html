@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load thumbnail %}
+
+{% block title %}
+  Tag: {{ object.name }}
+{% endblock title %}
+{% block content %}
+  <h1>Tag: {{ object.name }}</h1>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link {% if not is_past %}active{% endif %}"
+         aria-current="page"
+         href="{% url 'events:tag_detail' object.id %}?past=false">Upcoming</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if is_past %}active{% endif %}"
+         href="{% url 'events:tag_detail' object.id %}?past=true">Past</a>
+    </li>
+  </ul>
+  {% if not is_past %}
+    {% include 'events/event_list_include.html' with events=upcoming %}
+  {% else %}
+    {% include 'events/event_list_include.html' with events=past %}
+  {% endif %}
+{% endblock content %}

@@ -9,7 +9,7 @@ from .models import Film
 from .models import Host
 from .models import Location
 from .models import WorldBorder
-from .models import Tag
+from .models import Tag, TagKeyword
 from .models import Cookie, CookieSet
 
 class CookieInline(admin.StackedInline):
@@ -23,11 +23,16 @@ class CookieSetAdmin(admin.ModelAdmin):
     search_fields = ("name",)
     inlines = [CookieInline,]
 
+class TagKeywordInline(admin.StackedInline):
+    model = TagKeyword
+    extra = 0
+
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
     prepopulated_fields = {'slug': ('name',), }
+    inlines = [TagKeywordInline,]
 
 
 @admin.register(Event)

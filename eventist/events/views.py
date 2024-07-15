@@ -5,12 +5,13 @@ from django.utils import timezone
 from eventist.events.tasks import scrape_event
 from eventist.events.tasks import scrape_events_by_host
 from eventist.events.tasks.tmdb import find_film, find_films
-from eventist.events.tasks.tags import find_tags_for_all_events
+from eventist.events.tasks.tags import refresh_all_tags
 from eventist.events.tasks.artmozi import load_artmozi
 from django.db.models import Q
 from django.shortcuts import render
-from .models import Event, Host, Film
+from .models import Event, Host, Film, Tag
 from django.core.paginator import Paginator
+from django.db.models import Count
 
 # Create your views here.
 
@@ -34,7 +35,7 @@ def search_view(request):
 
 
 def reload_tags(request):
-    find_tags_for_all_events()
+    refresh_all_tags()
     return HttpResponse("Tags reloaded")
 
 
@@ -149,3 +150,26 @@ def film_details(request, pk):
     screenings = film.events.filter(
         start_date__gte=timezone.now()).order_by("start_date")
     return render(request, "events/film_detail.html", {"object": film, "screenings": screenings})
+
+
+def tag_list(request):
+    page = request.GET.get("page", 1)
+    tags = Tag.objects.all().annotate(
+        event_count=Count("events")).order_by("-event_count")
+    paginator = Paginator(tags, per_page=30)
+    page_object = paginator.get_page(page)
+
+    return render(request, "events/tag_list.html", {"page_obj": page_object})
+
+
+def tag_details(request, pk):
+    tag = Tag.objects.get(pk=pk)
+    events = tag.events.filter(cinema=False)
+    is_past = request.GET.get("past", False) == "true"
+    upcoming = events.filter(
+        start_date__gte=timezone.now()).order_by("start_date")
+    past = events.filter(start_date__lte=timezone.now()
+                         ).order_by("-start_date")
+
+    return render(request, "events/tag_detail.html", {"object": tag, "past": past,
+                                                      "upcoming": upcoming, "is_past": is_past})

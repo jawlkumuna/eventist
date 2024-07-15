@@ -28,6 +28,14 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+class TagKeyword(models.Model):
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, related_name="keywords")
+    keyword = models.CharField(max_length=256)
+    boundary = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.keyword
+
 
 class FilmGenre(models.Model):
     name = models.CharField(max_length=256)

@@ -27,7 +27,12 @@
             <div class="card-text">{{ event.location }}</div>
           </div>
           <div>
-            {% for tag in event.tags.all %}<span class="badge text-bg-primary">{{ tag.name }}</span>{% endfor %}
+            {% for tag in event.tags.all %}
+              <a href="{% url 'events:tag_detail' tag.id %}"
+                 class="text-decoration-none">
+                <span class="badge text-bg-primary me-1">{{ tag.name }}</span>
+              </a>
+            {% endfor %}
           </div>
         </div>
       </div>
