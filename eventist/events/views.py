@@ -3,7 +3,7 @@ from django.views import generic
 from django.utils import timezone
 
 from eventist.events.tasks import scrape_event
-from eventist.events.tasks import scrape_events_by_host, load_starred
+from eventist.events.tasks.facebook import scrape_events_by_host, load_starred, load_daterange
 from eventist.events.tasks.tmdb import find_film, find_films
 from eventist.events.tasks.tags import refresh_all_tags
 from eventist.events.tasks.artmozi import load_artmozi
@@ -18,6 +18,10 @@ from django.db.models import Count
 def load_starred_view(request):
     load_starred.delay()
     return HttpResponse("Starred events are loading")
+
+def load_daterange_view(request):
+    load_daterange.delay()
+    return HttpResponse("Main page events are loading")
 
 def load_artmozi_view(request):
     load_artmozi.delay()

@@ -2,6 +2,7 @@ import hashlib
 import json
 import time
 from datetime import datetime
+from datetime import timedelta
 
 import jq
 import requests
@@ -290,3 +291,20 @@ def load_starred():
     for host in Host.objects.filter(starred=True):
         scrape_events_by_host.delay(host.facebook_id, past=False)
         time.sleep(1)
+
+@shared_task
+def load_daterange(start: datetime = datetime.now(), end: datetime = datetime.now() + timedelta(days=3)):
+    url = f"https://www.facebook.com/events/?date_filter_option=CUSTOM_DATE_RANGE&discover_tab=CUSTOM&end_date={end.strftime("%Y-%m-%d")}T22%3A00%3A00.000Z&location_id=106502519386806&start_date={start.strftime("%Y-%m-%d")}T22%3A00%3A00.000Z"
+    download_facebook_page(url, scroll_count=15, forceDownload=True)
+    page = Download.objects.filter(url__contains=url).order_by("-download_date").first()
+    soup = BeautifulSoup(page.content.open(), "html.parser")
+
+    for link in soup.find_all("a"):
+        try:
+            url = link["href"]
+            print(url)
+            if "events" in url:
+                fbid = url.split("/")[2]
+                scrape_event.delay(fbid)
+        except Exception as e:
+            print(e)

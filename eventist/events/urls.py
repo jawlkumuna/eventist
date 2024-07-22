@@ -28,4 +28,5 @@ urlpatterns = [
 
     path("loadartmozi/", views.load_artmozi_view, name="loadArtmozi"),
     path("loadstarred/", views.load_starred_view, name="loadStarred"),
+    path("loaddaterange/", views.load_daterange_view, name="loadDateRange"),
 ]
