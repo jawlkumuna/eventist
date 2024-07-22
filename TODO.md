@@ -21,3 +21,7 @@
 [] background tasks
     [] require authentication for starting tasks
     [] use proper domain
+    [] scrape day specific and location specific event pages from fb
+[] other sources
+    [] ticketmaster
+    [] local theaters
