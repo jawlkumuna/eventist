@@ -10,4 +10,5 @@ __all__ = [
     'get_events',
     'scrape_event',
     'scrape_events_by_host',
+    'load_starred',
 ]

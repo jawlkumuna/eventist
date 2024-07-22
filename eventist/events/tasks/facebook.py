@@ -43,7 +43,7 @@ def download_facebook_page(
         )
 
     with sync_playwright() as p:
-        browser = p.firefox.launch(headless=True, args=["--start-maximized"])
+        browser = p.firefox.launch(headless=False, args=["--start-maximized"])
         ctx = browser.new_context()
 
         ctx.add_cookies(cookies)
@@ -284,3 +284,9 @@ def scrape_events_by_host(hostid: str, past=False, scroll_count=15):
                     scrape_event.delay(fbid)
             except Exception as e:
                 print(e)
+
+@shared_task
+def load_starred():
+    for host in Host.objects.filter(starred=True):
+        scrape_events_by_host.delay(host.facebook_id, past=False)
+        time.sleep(1)
