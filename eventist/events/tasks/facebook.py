@@ -44,7 +44,7 @@ def download_facebook_page(
         )
 
     with sync_playwright() as p:
-        browser = p.firefox.launch(headless=False, args=["--start-maximized"])
+        browser = p.firefox.launch(headless=True, args=["--start-maximized"])
         ctx = browser.new_context()
 
         ctx.add_cookies(cookies)

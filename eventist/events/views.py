@@ -1,3 +1,5 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.views import generic
 from django.utils import timezone
@@ -143,6 +145,8 @@ def host_view(request, pk):
 
 
 class FilmListView(generic.ListView):
+    def get_queryset(self) -> QuerySet[Any]:
+        return super().get_queryset().order_by("-tmdb_vote_average")
     model = Film
     paginate_by = 24
     template_name = "events/film_list.html"

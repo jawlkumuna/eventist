@@ -88,11 +88,19 @@ COPY --chown=django:django . ${APP_HOME}
 # make django owner of the WORKDIR directory as well.
 RUN chown django:django ${APP_HOME}
 
+# install playwright
+RUN mkdir /nonexistent
+RUN chmod 777 /nonexistent
+RUN playwright install-deps
+
 USER django
 
 RUN DATABASE_URL="" \
   CELERY_BROKER_URL="" \
   DJANGO_SETTINGS_MODULE="config.settings.test" \
   python manage.py compilemessages
+
+
+RUN playwright install firefox
 
 ENTRYPOINT ["/entrypoint"]
