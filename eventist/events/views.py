@@ -109,7 +109,7 @@ def event_list_view(request):
         cinema=False, start_date__gte=timezone.now()).order_by("start_date")
     paginator = Paginator(events, per_page=21)
     page_object = paginator.get_page(page)
-    return render(request, "event_list.html", {"page_obj": page_object})
+    return render(request, "events/event_list.html", {"page_obj": page_object, "object_list": page_object})
 
 
 class EventView(generic.DetailView):

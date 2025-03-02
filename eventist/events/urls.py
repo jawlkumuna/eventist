@@ -5,7 +5,7 @@ from . import views
 app_name = "events"
 urlpatterns = [
     path("", views.home_view, name="home"),
-    path("events/", views.EventListView.as_view(), name="events"),
+    path("events/", views.event_list_view, name="events"),
     path("events/<int:pk>/", views.EventView.as_view(), name="event_detail"),
     path("hosts/", views.HostListView.as_view(), name="hosts"),
     path("hosts/<int:pk>/", views.host_view, name="host_detail"),
